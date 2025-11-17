@@ -156,14 +156,14 @@ The docs were created collaboratively between human developers and AI coding ass
 - **Kixx on npm**: https://www.npmjs.com/package/kixx
 - **Kixx GitHub**: https://github.com/kixxauth/kixx
 - **Example Application**: [CFNP Website](https://github.com/saouderkirk/cfnp) (built with these docs)
-- **Creator's Website**: https://chriswalker.me
+- **Creator's Website**: https://kriswalker.me
 - **Video Tutorials**: [@essayohh on YouTube](https://www.youtube.com/@essayohh)
 
 ## Maintainers
 
 Created and maintained by [@saouderkirk](https://github.com/saouderkirk) with contributions from the community.
 
-Framework created by [Kristoffer Walker](https://chriswalker.me) ([@kixxauth](https://github.com/kixxauth))
+Framework created by [Kristoffer Walker](https://kriswalker.me) ([@kixxauth](https://github.com/kixxauth))
 
 ## License
 
