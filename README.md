@@ -86,14 +86,19 @@ See the comprehensive [Deployment Guide](./how-to-guides/03-deploying-to-product
 
 ## About Kixx
 
-[Kixx](https://www.kixx.dev) is a convention-over-configuration web framework for Node.js that emphasizes:
+[Kixx](https://www.kixx.dev) is **a rapid web development framework for humans and their AI tools.**
 
-- **Minimal boilerplate** - Start building features, not configuration
-- **Sensible defaults** - Works out of the box for most use cases
-- **File-based routing** - Your file structure defines your routes
-- **Server-side rendering** - Fast, lightweight pages without heavy JavaScript
-- **Primitive components** - Small, composable building blocks
-- **AI-optimized** - Designed to work exceptionally well with LLM code generation
+From the official description:
+> Build blazingly fast in AI environments like Claude Code and Cursor without generating piles of shit code you'll need to rewrite later.
+
+**Key Characteristics:**
+
+- **Hypermedia-Driven** - HTML serves as the engine of application state
+- **Convention over Configuration and Code** - Dramatically reduces code needed
+- **AI-Optimized** - MCP server manages LLM context, guiding AI to use convention over code
+- **Developer Power** - Full control to extend everything with your own code
+- **Monolithic Architecture** - Optimized for solo developers and small, fast-moving teams
+- **Server-Side Rendering** - Fast, lightweight pages without heavy client-side JavaScript
 
 ### Why Kixx Exists
 

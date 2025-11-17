@@ -5,6 +5,7 @@ Understanding **why** Kixx exists and **how** it thinks will help you build bett
 ## Table of Contents
 
 - [The Problem Kixx Solves](#the-problem-kixx-solves)
+- [Core Principles](#core-principles)
 - [Core Philosophy](#core-philosophy)
 - [Design Principles](#design-principles)
 - [AI Integration Strategy](#ai-integration-strategy)
@@ -45,6 +46,44 @@ From creator Kristoffer Walker:
 > "There's really nifty little things like an avalanche reporting website that I work on for backcountry skiers. I work on stuff for some ice rinks, some scheduling systems for a hockey team... none of those are things that nonprofit organizations could spend $100,000 with developers to build."
 
 These are sophisticated systems (user-generated content, video processing, email notifications, admin workflows) but built rapidly with minimal overhead.
+
+---
+
+## Core Principles
+
+**From the official Kixx documentation** - These are the foundational principles that guide all decisions in the Kixx framework:
+
+### 1. Optimize for productivity
+
+When a decision needs to be made, we optimize for developer productivity. This is the north star of the Kixx framework, and most of the remaining principles derive from it.
+
+### 2. Have opinions
+
+Kixx has opinions about building great web applications. In our opinion, a good framework needs to have opinions, otherwise, what's the point of using a framework?
+
+### 3. Software is a craft
+
+Humans write software for humans, and even in the age of AI, building software is, and will always be a craft done by a craftsperson.
+
+### 4. Remove complexity
+
+There will always be complexity in the problems we choose to solve with our software. But, Kixx will seek out ways to bury incidental complexity and keep our brains concentrated on the real problems.
+
+### 5. The World Wide Web is the best application platform ever invented
+
+Nothing has ever been created that matches the accessibility, openness, power, and distribution of the Web. Kixx is fully committed to improving and contributing to the WWW.
+
+### 6. AI tools can be built and used without negative moral, ethical, or environmental impacts
+
+We can develop AI tools which are small, productive, focused on the craft of software development, and don't slurp up massive amounts of energy.
+
+### 7. Favor monolithic applications over distributed architectures
+
+Distributed microservices might be great for large engineering teams, but Kixx is made for solo developers and small, fast moving teams. Monolithic, hypermedia-driven applications, without the complexity of microservices and piles of client side JavaScript, give us a massive velocity boost over our distributed counterparts.
+
+### 8. Convention over Configuration and Code
+
+Wherever possible Kixx uses conventions over configuration and code for common web application logic. This dramatically reduces the amount of code that needs to be written, generated, and reasoned about to build a web app.
 
 ---
 
@@ -381,4 +420,12 @@ If you need enterprise scale, complex client-side interactions, or don't agree w
 
 **"Fun for a developer, fun for a user, fun for the owner."** - Kristoffer Walker
 
-Built with ❤️ using [Kixx](https://www.kixx.dev)
+---
+
+**Kixx Framework Copyright**
+Copyright: (c) 2017 - 2025 by Kris Walker ([www.kriswalker.me](https://www.kriswalker.me))
+
+Unless otherwise indicated, all source code is licensed under the MIT license.
+
+**This Documentation**
+Built with ❤️ using [Kixx](https://www.kixx.dev) • Licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)

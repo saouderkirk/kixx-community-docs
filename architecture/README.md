@@ -54,16 +54,28 @@ From creator Kristoffer Walker:
 
 See [PHILOSOPHY.md](../PHILOSOPHY.md) for more on this approach.
 
-### [Hypermedia-Driven Applications](./hypermedia-driven.md)
-How Kixx uses HTML as the engine of application state.
+### Hypermedia-Driven Applications
 
-**What we know**:
-- Server-side rendering of all application state
-- State transitions through hypermedia (links and forms)
-- Progressive enhancement with minimal JavaScript
-- RESTful architecture with HTML hypertext
+**Official Definition:**
 
-**TODO**: Document practical examples and patterns.
+Hypermedia-Driven Applications are web applications where hypermedia (HTML) serves as the engine of application state. Instead of relying on JavaScript to manage state and coordinate between client and server, the application state changes by following links and submitting forms embedded in the HTML responses.
+
+**Key Characteristics:**
+
+- **Server-side rendering** of all application state
+- **State transitions** through hypermedia (links and forms)
+- **Progressive enhancement** with minimal JavaScript
+- **RESTful architecture** with HTML hypertext as the representation of state
+- **Monolithic design** for simplicity and productivity
+
+The Kixx framework embodies these principles, providing a productive environment for building web apps that are simple, fast, and maintainable.
+
+**Further Reading:**
+- [Hypermedia-Driven Applications by HTMX](https://htmx.org/essays/hypermedia-driven-applications/)
+- [The Web's Grain by Frank Chimero](https://frankchimero.com/blog/2015/the-webs-grain/)
+- REST: From Research to Practice
+
+**TODO**: Document practical examples and patterns specific to Kixx.
 
 ### [Convention over Configuration](./convention-over-configuration.md)
 How Kixx uses conventions to reduce boilerplate.
