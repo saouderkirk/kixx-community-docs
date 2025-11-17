@@ -4,6 +4,56 @@ Understanding how Kixx works under the hood.
 
 ## Core Concepts
 
+### Primitive Components Philosophy
+
+**The Foundation of Kixx**
+
+Kixx is built on the idea of **primitive components** - small, focused, composable building blocks that are simple on their own but powerful when combined.
+
+**What are Primitive Components?**
+
+A primitive component is a discrete module that:
+- Has a single, clear purpose
+- Can be understood independently
+- Fits entirely in your head
+- Becomes powerful when composed with other primitives
+
+**Example: Email + Job Scheduler**
+
+Individually:
+- **Emailer** - Sends emails (does nothing else)
+- **Job Scheduler** - Schedules tasks (does nothing else)
+
+Combined:
+- Schedule a job → Send confirmation email
+- Sophisticated email automation with minimal code
+
+**Historical Influences**
+
+From creator Kristoffer Walker:
+
+**AWS** - Infrastructure as primitive components
+- S3 (storage), RDS (database), Lambda (compute)
+- Each service is simple; power comes from composition
+
+**Firefox XP-COM** - Cross-platform component model
+- Networking component, observer model, plugin system
+- Extensible through discrete modules
+
+**Ruby on Rails** - MVC as primitives
+- Models, Views, Controllers as building blocks
+- Convention-based composition
+
+**Benefits**
+
+1. **Minimal Learning** - Learn one component at a time
+2. **Small Context** - Think about 1-3 components simultaneously
+3. **AI-Friendly** - LLMs can understand components in isolation
+4. **Progressive** - Start simple, add complexity incrementally
+5. **Composable** - Infinite possibilities from finite primitives
+
+See [PHILOSOPHY.md](../PHILOSOPHY.md) for more on this approach.
+
 ### [Hypermedia-Driven Applications](./hypermedia-driven.md)
 How Kixx uses HTML as the engine of application state.
 
@@ -17,6 +67,12 @@ How Kixx uses HTML as the engine of application state.
 
 ### [Convention over Configuration](./convention-over-configuration.md)
 How Kixx uses conventions to reduce boilerplate.
+
+**What we know**:
+- File structure defines routing
+- Standard naming conventions reduce decisions
+- Sensible defaults work for 80% of cases
+- Override when needed, but conventions come first
 
 **TODO**: Document all conventions and their rationale.
 
@@ -73,6 +129,46 @@ Why Kixx uses JavaScript instead of TypeScript.
 ---
 
 ## Component Deep Dives
+
+### MCP (Model Context Protocol) Server
+
+**AI Integration for Kixx**
+
+The MCP server is a plugin for local AI agents (Cursor, Claude Code, etc.) that provides Kixx-specific context to LLMs.
+
+**How It Works:**
+
+1. **Lives Locally** - Runs on your laptop alongside your AI agent
+2. **Answers Questions** - Provides documentation when LLM needs it
+3. **Just-in-Time Context** - Only loads relevant component docs
+4. **Enables Deterministic Output** - Smaller context = better code generation
+
+**Example Flow:**
+
+```
+Developer: "Send an email when a new user signs up"
+    ↓
+LLM detects "Kixx framework" keyword
+    ↓
+LLM asks MCP: "How do I send email in Kixx?"
+    ↓
+MCP returns Emailer component documentation
+    ↓
+LLM asks MCP: "How do I detect new users in Kixx?"
+    ↓
+MCP returns database listener documentation
+    ↓
+LLM generates minimal code to connect components
+```
+
+**Benefits:**
+
+- **Environmental** - Less compute = less energy consumption
+- **Speed** - Smaller context processes faster
+- **Quality** - Focused context produces better code
+- **Local** - Can run entirely on your machine
+
+**TODO**: Document MCP server setup and configuration.
 
 ### [Virtual Hosts](./virtual-hosts.md)
 **TODO**: How virtual hosting works in Kixx.

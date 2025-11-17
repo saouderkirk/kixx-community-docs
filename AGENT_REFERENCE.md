@@ -2,6 +2,37 @@
 
 Quick reference for AI agents working with Kixx. Focuses on conventions that aren't obvious from exploring code.
 
+## Why Kixx Is AI-Optimized
+
+Kixx was designed with LLM code generation in mind, using **primitive components** and **minimal context windows**.
+
+**Traditional Approach:**
+```
+Ingest entire codebase (400K tokens) → Slow → High energy → Variable quality
+```
+
+**Kixx Approach:**
+```
+Ingest component docs (2-3 components) → Fast → Low energy → High quality
+```
+
+### How to Work With Kixx as an LLM
+
+1. **Focus on Components** - Don't try to understand the entire framework
+2. **Small Context** - Load documentation for 1-3 components at a time
+3. **Compose, Don't Generate** - Connect existing components rather than writing from scratch
+4. **Pattern Recognition** - Learn the conventions once, apply everywhere
+
+**Example:**
+```
+Task: "Send email when user signs up"
+
+DON'T: Generate custom email handler from scratch
+DO: Load Emailer + Job Scheduler docs → Connect them
+```
+
+See [PHILOSOPHY.md](./PHILOSOPHY.md#ai-integration-strategy) for the full AI integration strategy.
+
 ## Critical Gotchas
 
 ### 1. Non-Root Pages MUST Use Subdirectory Structure
