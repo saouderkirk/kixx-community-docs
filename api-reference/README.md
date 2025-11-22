@@ -48,22 +48,42 @@ Serves static files (CSS, JS, images).
 
 ## Template Helpers
 
-### Built-in Helpers
+**Official Documentation**: [Templating with Kixx](https://github.com/kixx-framework/kixx/blob/main/docs/templating-with-kixx.md)
 
-- [`{{#if}}` - Conditional rendering](./helper-if.md) **TODO**
-- [`{{#if-equal}}` - Equality comparison](./helper-if-equal.md) **TODO**
-- [`{{#if-empty}}` - Empty check](./helper-if-empty.md) **TODO**
-- [`{{#each}}` - Iteration](./helper-each.md) **TODO**
-- [`{{noop}}` - No-operation placeholder](./helper-noop.md) **TODO**
-- [`{{> partial}}` - Include partials](./helper-partial.md) **TODO**
+### Built-in Block Helpers
 
-### View Helpers
+| Helper | Usage | Description |
+|--------|-------|-------------|
+| `#each` | `{{#each items \|item, index\|}}...{{/each}}` | Iterate over arrays, objects, Maps, Sets |
+| `#if` | `{{#if condition}}...{{/if}}` | Conditional rendering based on truthiness |
+| `#ifEqual` | `{{#ifEqual value1 value2}}...{{/ifEqual}}` | Compare two values using `==` equality |
 
-- [`format_date` - Date formatting](./helper-format-date.md) **TODO**
-- [`plus_one` - Increment values](./helper-plus-one.md) **TODO**
+### Built-in Inline Helpers
+
+| Helper | Usage | Description |
+|--------|-------|-------------|
+| `formatDate` | `{{ formatDate date timezone="..." format="..." }}` | Format dates with timezone and locale |
+| `unescape` | `{{ unescape htmlContent }}` | Prevent HTML escaping (trusted content only!) |
+| `plusOne` | `{{ plusOne index }}` | Add 1 to number (for 1-based display) |
+
+### Truthiness Rules
+
+Values considered **truthy**: non-empty strings, non-zero numbers, `true`, non-empty collections
+Values considered **falsy**: `false`, `0`, empty strings, `null`, `undefined`, empty collections
 
 ### Custom Helpers
-**TODO**: Document how to create custom template helpers.
+
+JavaScript modules in `./templates/helpers/` exporting `name` string and `helper` function.
+
+```javascript
+// templates/helpers/truncate.js
+export const name = "truncate";
+export function helper(text, length = 100) {
+    return text.length > length ? text.slice(0, length) + "..." : text;
+}
+```
+
+**Block helpers** receive `renderPrimary()` and `renderInverse()` methods for control flow.
 
 ---
 
@@ -129,3 +149,52 @@ See [CLI Reference](./cli-commands.md)
 - Custom data adapters
 
 See [Data Layer Reference](./data-layer.md)
+
+---
+
+## Testing
+
+**Official Documentation**:
+- [Kixx Test Framework](https://github.com/kixx-framework/kixx/blob/main/docs/kixx-test-framework.md)
+- [Assertion Library](https://github.com/kixx-framework/kixx/blob/main/docs/assertion-library.md)
+
+### Test Framework
+
+```javascript
+import { describe, before, after, it } from "kixx-test";
+
+describe("Feature Name", ({ before, after, it }) => {
+    before(() => { /* setup */ });
+    after(() => { /* cleanup */ });
+    it("should do something", () => { /* assertion */ });
+});
+```
+
+**Key Rules**:
+- Do NOT nest describe() blocks
+- Use try-catch for error testing
+- Prefer `.callCount` over `.calledOnce`
+
+### Assert Library
+
+| Function | Description |
+|----------|-------------|
+| `assert(value)` | Value is truthy |
+| `assertFalsy(value)` | Value is falsy |
+| `assertEqual(expected, actual)` | Strict equality (`===`) |
+| `assertNotEqual(expected, actual)` | Not equal |
+| `assertMatches(pattern, value)` | RegExp, substring, or equality |
+| `assertDefined(value)` | Not undefined |
+| `assertUndefined(value)` | Is undefined |
+| `assertNonEmptyString(value)` | Non-empty string |
+| `assertNumberNotNaN(value)` | Number, not NaN |
+| `assertArray(value)` | Is array |
+| `assertBoolean(value)` | Is boolean |
+| `assertFunction(value)` | Is function |
+| `assertValidDate(value)` | Valid Date object |
+| `assertGreaterThan(control, subject)` | subject > control |
+| `assertLessThan(control, subject)` | subject < control |
+
+**Note**: No deep equality - check individual properties explicitly.
+
+See [Testing with Kixx Guide](../how-to-guides/testing-with-kixx.md) for full examples

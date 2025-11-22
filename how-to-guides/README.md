@@ -50,6 +50,14 @@ Practical, step-by-step guides for building with Kixx.
 - [Protected Routes](./auth-protected-routes.md) **TODO**
 - [Session Management](./auth-sessions.md) **TODO**
 
+## Testing
+
+- [Testing with Kixx](./testing-with-kixx.md) ✓
+  - Test framework structure (describe, before, after, it)
+  - Kixx Assert library
+  - Sinon integration (spies and stubs)
+  - Best practices
+
 ## Advanced Topics
 
 - [Custom Request Handlers](./advanced-handlers.md) **TODO**

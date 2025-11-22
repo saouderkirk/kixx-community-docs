@@ -155,23 +155,87 @@ Available in templates via `{{ variable }}`:
 {{/if}}
 ```
 
-## Template Syntax
+## Template Syntax (Official)
+
+Kixx uses mustache-style templating with automatic HTML escaping for security.
+
+### Basic Expressions
 
 ```handlebars
-<!-- Variables -->
-{{ variable }}
+<!-- Simple variables (HTML escaped) -->
+{{ album }}
+
+<!-- Nested properties (dot notation) -->
+{{ song.writer.firstName }}
+
+<!-- Array access (bracket notation) -->
+{{ images[0].src }}
+
+<!-- Properties with special characters -->
+{{ headers[Content-Type] }}
+
+<!-- Comments (not rendered) -->
+{{!-- This is a comment --}}
+```
+
+### Block Helpers
+
+```handlebars
+<!-- Iterate over arrays/objects -->
+{{#each items |item, index|}}
+    <li>{{ index }}: {{ item.name }}</li>
+{{/each}}
 
 <!-- Conditionals -->
 {{#if condition }}
     <p>Condition is true</p>
 {{/if}}
 
-<!-- Partials -->
-{{> partial-name.html }}
-
-<!-- Special: Render page body -->
-{{noop body }}
+<!-- Equality comparison -->
+{{#ifEqual status "active" }}
+    <span class="active">Active</span>
+{{/ifEqual}}
 ```
+
+### Inline Helpers
+
+```handlebars
+<!-- Format dates -->
+{{ formatDate createdAt timezone="America/New_York" format="long" }}
+
+<!-- Prevent HTML escaping (use only for trusted content!) -->
+{{ unescape processedMarkdown }}
+
+<!-- Add 1 to number (for 1-based display) -->
+Item {{ plusOne index }}
+```
+
+### Partials
+
+Stored in `./templates/partials/`. Inherit parent context automatically.
+
+```handlebars
+{{> header.html }}
+{{> footer.html }}
+```
+
+### HTML Security
+
+Kixx automatically escapes HTML characters (`&` becomes `&amp;`). Only use `unescape` for trusted content like processed markdown.
+
+### Custom Helpers
+
+Located in `./templates/helpers/`. Export `name` string and `helper` function.
+
+```javascript
+// templates/helpers/truncate.js
+export const name = "truncate";
+export function helper(text, length = 100) {
+    return text.length > length ? text.slice(0, length) + "..." : text;
+}
+```
+
+Usage: `{{ truncate description 50 }}`
 
 ## Common Errors
 
