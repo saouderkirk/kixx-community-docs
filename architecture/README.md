@@ -142,6 +142,17 @@ Why Kixx uses JavaScript instead of TypeScript.
 
 ## Component Deep Dives
 
+### [Request Handlers](./handlers.md)
+How handlers process HTTP requests in Kixx.
+
+**What we know**:
+- Handler signature: `async function(context, request, response, skip)`
+- Built-in handlers: `StaticFileServer`, `PageHandler`, `PageErrorHandler`
+- Handlers chain together - first to call `skip()` wins
+- Error handlers catch exceptions from main handlers
+
+See [handlers.md](./handlers.md) for complete documentation.
+
 ### MCP (Model Context Protocol) Server
 
 **AI Integration for Kixx**

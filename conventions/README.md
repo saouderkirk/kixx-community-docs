@@ -12,13 +12,52 @@ my-kixx-app/
 ├── virtual-hosts.jsonc     # Virtual host routing
 ├── package.json           # Node.js dependencies
 ├── pages/                 # Page content and metadata
+├── public/                # Static files (CSS, JS, images, favicon)
 ├── routes/                # Route definitions
 └── templates/             # HTML templates
     ├── templates/         # Main templates
-    └── partials/          # Reusable template parts
+    ├── partials/          # Reusable template parts
+    └── helpers/           # Custom template helpers
 ```
 
-**TODO**: Document optional directories and their purposes.
+### Public Directory (Static Files)
+
+The `public/` directory serves static assets automatically. No configuration needed.
+
+**How it works**:
+- Files in `public/` are served at the root URL path
+- `public/favicon.svg` → accessible at `/favicon.svg`
+- `public/css/styles.css` → accessible at `/css/styles.css`
+- `public/images/logo.png` → accessible at `/images/logo.png`
+
+**Security features** (built into StaticFileServer):
+- Blocks path traversal (`..` and `//` are rejected)
+- Blocks hidden files (paths starting with `.`)
+- Only allows alphanumeric characters, underscores, hyphens, and dots
+- Returns 400 Bad Request for invalid paths
+
+**Caching**:
+- Default: `Cache-Control: no-cache`
+- Supports `If-Modified-Since` conditional requests
+- Returns `304 Not Modified` when appropriate
+- Custom cache control via config (see Configuration section)
+
+**Supported file types**: All common web assets (HTML, CSS, JS, images, fonts, SVG, etc.) with automatic Content-Type detection.
+
+**Example structure**:
+```
+public/
+├── favicon.ico
+├── favicon.svg
+├── robots.txt
+├── css/
+│   └── styles.css
+├── js/
+│   └── app.js
+└── images/
+    ├── logo.png
+    └── hero.jpg
+```
 
 ---
 
@@ -66,14 +105,70 @@ pages/
 
 ### Routes Directory
 
-**What we know**:
-- `*.jsonc` files define routes
-- Routes reference pages by name
+Route files define URL patterns, HTTP methods, and handler chains.
 
-**TODO**: Document:
-- Naming conventions for route files
-- How multiple route files are loaded
-- Load order if it matters
+**File location**: `routes/main.jsonc` (referenced from `virtual-hosts.jsonc`)
+
+**Route definition structure**:
+```jsonc
+[
+    {
+        "name": "AboutPage",           // Unique route identifier
+        "pattern": "/about",           // URL pattern (uses path-to-regexp syntax)
+        "targets": [
+            {
+                "name": "AboutTarget",
+                "methods": ["GET", "HEAD"],  // Allowed HTTP methods
+                "handlers": [
+                    // Handler chain - executed in order
+                    "StaticFileServer()",    // Try static file first
+                    "PageHandler()"          // Then try page handler
+                ]
+            }
+        ],
+        "errorHandlers": [
+            "PageErrorHandler()"       // Handle errors (404s, etc.)
+        ]
+    }
+]
+```
+
+**Pattern syntax** (path-to-regexp):
+- `/about` - Exact match
+- `/blog/:slug` - Named parameter (accessible as `request.pathnameParams.slug`)
+- `/files/*` - Wildcard match
+- `*` - Match all paths (used in default routes)
+
+**Default routes** (`kixx://defaults.json`):
+```javascript
+// What the default routes provide:
+{
+    name: 'DefaultPages',
+    pattern: '*',                    // Match everything
+    targets: [{
+        methods: ['GET', 'HEAD'],
+        handlers: [
+            StaticFileServer(),      // 1. Try to serve from /public
+            PageHandler(),           // 2. Try to render a page
+        ]
+    }],
+    errorHandlers: [
+        PageErrorHandler()           // Handle 404s with error page
+    ]
+}
+```
+
+**Handler execution order**:
+1. First handler in the array runs first
+2. If handler returns response unchanged, next handler runs
+3. If handler serves content (calls `skip()`), remaining handlers are skipped
+4. Error handlers run if any handler throws
+
+**Most apps don't need custom routes** - the defaults handle static files and pages automatically. Only create custom routes for:
+- API endpoints
+- Custom handlers
+- Form submissions
+- Different handler chains per path
 
 ### Templates Directory
 
@@ -111,14 +206,70 @@ pages/
 
 ### virtual-hosts.jsonc
 
-**What we know**:
-- Hostnames are written backwards: `"com.example.subdomain"`
-- Routes use protocols: `"app://file.jsonc"` or `"kixx://defaults.json"`
+Maps hostnames to route configurations. Required for Kixx to serve requests.
 
-**TODO**: Document:
-- Hostname matching rules
-- Available route protocols
-- Route resolution order
+**Basic structure**:
+```jsonc
+[
+    {
+        "name": "Main",
+        "hostname": "com.example.www",     // Reversed hostname format
+        "routes": [
+            "app://main.jsonc",            // Your custom routes (from /routes)
+            "kixx://defaults.json"         // Framework default routes
+        ]
+    }
+]
+```
+
+**Hostname format** - hostnames are written **backwards** (most generic → most specific):
+| Actual Hostname | Config Format |
+|-----------------|---------------|
+| `localhost` | `"localhost"` |
+| `example.com` | `"com.example"` |
+| `www.example.com` | `"com.example.www"` |
+| `api.staging.example.com` | `"com.example.staging.api"` |
+
+**Why reversed?** Enables hierarchical matching from generic (TLD) to specific (subdomain).
+
+**Route protocols**:
+- `app://filename.jsonc` - Load from your `/routes` directory
+- `kixx://defaults.json` - Load Kixx framework defaults
+
+**Route resolution order**:
+1. Routes are loaded in array order
+2. First matching route wins
+3. Always put custom routes before `kixx://defaults.json`
+
+**Multiple virtual hosts** (for different domains/subdomains):
+```jsonc
+[
+    {
+        "name": "API",
+        "hostname": "com.example.api",
+        "routes": ["app://api-routes.jsonc"]
+    },
+    {
+        "name": "Main",
+        "hostname": "com.example.www",
+        "routes": ["app://main.jsonc", "kixx://defaults.json"]
+    },
+    {
+        "name": "Fallback",
+        "hostname": "com.example",
+        "routes": ["kixx://defaults.json"]
+    }
+]
+```
+
+**Development tip**: For local development, use `"localhost"` as hostname:
+```jsonc
+{
+    "name": "Development",
+    "hostname": "localhost",
+    "routes": ["app://main.jsonc", "kixx://defaults.json"]
+}
+```
 
 ---
 

@@ -92,18 +92,23 @@ See [PHILOSOPHY.md](./PHILOSOPHY.md#ai-integration-strategy) for the full AI int
 ## File Structure
 
 ```
-pages/
-├── page.jsonc          # Homepage metadata (root page uses flat structure)
-├── page.md             # Homepage content
-├── about/              # /about page (MUST use subdirectory)
-│   ├── page.jsonc      # /about metadata
-│   └── page.md         # /about content
-└── blog/
-    ├── page.jsonc      # /blog homepage
-    ├── page.md         # /blog content
-    └── post1/          # /blog/post1 page (nested subdirectory)
-        ├── page.jsonc  # /blog/post1 metadata
-        └── page.md     # /blog/post1 content
+my-kixx-app/
+├── kixx-config.jsonc       # App configuration
+├── virtual-hosts.jsonc     # Hostname → routes mapping
+├── routes/
+│   └── main.jsonc          # Custom routes (usually empty - defaults work)
+├── pages/
+│   ├── page.jsonc          # Homepage metadata (root uses flat structure)
+│   ├── page.md             # Homepage content
+│   └── about/              # /about page (MUST use subdirectory)
+│       ├── page.jsonc
+│       └── page.md
+├── public/                 # Static files (auto-served at root URL)
+│   ├── favicon.svg         # → /favicon.svg
+│   └── css/styles.css      # → /css/styles.css
+└── templates/
+    ├── templates/          # Base templates
+    └── partials/           # Reusable components
 ```
 
 ## Page Metadata Schema
@@ -236,6 +241,62 @@ export function helper(text, length = 100) {
 ```
 
 Usage: `{{ truncate description 50 }}`
+
+## Static Files (Public Directory)
+
+**Location**: `/public`
+
+Files are auto-served at root URL path. No configuration needed.
+
+```
+public/favicon.svg     → /favicon.svg
+public/css/styles.css  → /css/styles.css
+public/images/logo.png → /images/logo.png
+```
+
+**Security** (built-in):
+- Blocks `..` and `//` (path traversal)
+- Blocks hidden files (`.dotfiles`)
+- Only allows: `a-z`, `0-9`, `_`, `-`, `.`
+
+**Caching**: Default `no-cache`, supports `If-Modified-Since`.
+
+## Virtual Hosts
+
+**File**: `virtual-hosts.jsonc`
+
+**Critical**: Hostnames are written **backwards**:
+```
+www.example.com  →  "com.example.www"
+api.example.com  →  "com.example.api"
+localhost        →  "localhost"
+```
+
+**Minimal config**:
+```jsonc
+[{
+    "name": "Main",
+    "hostname": "localhost",
+    "routes": ["app://main.jsonc", "kixx://defaults.json"]
+}]
+```
+
+**Route protocols**:
+- `app://file.jsonc` - Your `/routes` directory
+- `kixx://defaults.json` - Framework defaults (StaticFileServer + PageHandler)
+
+## Routes
+
+**File**: `routes/main.jsonc`
+
+**Most apps leave this empty** (`[]`) - defaults handle static files + pages.
+
+Custom routes only needed for APIs, forms, custom handlers.
+
+**Default behavior** (from `kixx://defaults.json`):
+1. Try `StaticFileServer()` - serve from `/public`
+2. Try `PageHandler()` - render from `/pages`
+3. `PageErrorHandler()` - 404 if nothing matches
 
 ## Common Errors
 
